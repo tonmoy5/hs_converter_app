@@ -21,9 +21,7 @@ app.post('/convert', async (req, res) => {
   }
 });
 
-app.get("/", async (req, res) => {
-  res.status(200).send('OK');
-})
+app.get("/", (req, res) => res.send("Express on Vercel"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
