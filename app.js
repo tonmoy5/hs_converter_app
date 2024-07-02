@@ -8,9 +8,7 @@ app.use(express.json());
 
 app.post('/convert', async (req, res) => {
   try {
-    const textObject = req.body; // Assuming the object is sent in the body of the request
-
-    // Convert text to numbers (this is a dummy example, adjust as needed)
+    const textObject = req.body;
     const numberObject = {};
     for (const key in textObject) {
       numberObject[key] = parseFloat(textObject[key]);
