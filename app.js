@@ -23,6 +23,10 @@ app.post('/convert', async (req, res) => {
   }
 });
 
+app.get("/", async (req, res) => {
+  res.status(200).send('OK');
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
