@@ -8,6 +8,17 @@ app.use(express.json());
 
 app.post('/convert', async (req, res) => {
   try {
+    console.log(req.body);
+    const number = parseFloat(req.body.value);
+    res.status(200).json(number);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+app.post('/convert_multiple', async (req, res) => {
+  try {
     const textObject = req.body;
     const numberObject = {};
     for (const key in textObject) {
