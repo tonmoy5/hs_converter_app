@@ -9,7 +9,12 @@ app.use(express.json());
 app.post('/test', async (req, res) => {
   try {
     console.log(req.body);
-    res.status(200).json(req.body);
+    res.status(200).json({
+      "outputFields": {
+        "myOutput": parseFloat(req.body.value),
+        "hs_execution_state": "SUCCESS"
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
