@@ -204,7 +204,6 @@ app.post('/text_to_number', async (req, res) => {
 // Convert number to string
 app.post('/number_to_text', async (req, res) => {
   try {
-    console.log(req.body);
     const text = req.body.value.toString();
     res.status(200).json({
       "outputFields": {
