@@ -27,7 +27,12 @@ app.post('/number_to_text', async (req, res) => {
   try {
     console.log(req.body);
     const text = req.body.value.toString();
-    res.status(200).json({ text });
+    res.status(200).json({
+      "outputFields": {
+        "Converted_Text": text,
+        "hs_execution_state": "SUCCESS"
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
