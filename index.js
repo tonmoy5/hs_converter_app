@@ -10,7 +10,12 @@ app.post('/text_to_number', async (req, res) => {
   try {
     console.log(req.body);
     const number = parseFloat(req.body.value);
-    res.status(200).json(number);
+    res.status(200).json({
+      "outputFields": {
+        "numberOutput": number,
+        "hs_execution_state": "SUCCESS"
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
