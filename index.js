@@ -9,7 +9,7 @@ const app = express();
 const qs = require('qs');
 
 const PORT = process.env.PORT || 3000;
-const BASE_URL = "https://dataconvertter-jrivzo2kh-tonmoy5s-projects.vercel.app/"
+const BASE_URL = "https://dataconvertter-jrivzo2kh-tonmoy5s-projects.vercel.app"
 // const BASE_URL = "http://localhost:3000"
 
 const refreshTokenStore = {};
@@ -183,8 +183,9 @@ app.get('/error', (req, res) => {
 
 // Text to number conversion
 app.post('/text_to_number', async (req, res) => {
+  console.log(req)
   try {
-    console.log(req.body);
+    console.log(req.body.value);
     const number = parseFloat(req.body.value);
     res.status(200).json({
       "outputFields": {
