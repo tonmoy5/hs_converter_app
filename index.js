@@ -6,22 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.post('/test', async (req, res) => {
-  try {
-    console.log(req.body);
-    res.status(200).json({
-      "outputFields": {
-        "myOutput": parseFloat(req.body.value),
-        "hs_execution_state": "SUCCESS"
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
-  }
-});
-
-app.post('/convert', async (req, res) => {
+app.post('/text_to_number', async (req, res) => {
   try {
     console.log(req.body);
     const number = parseFloat(req.body.value);
@@ -32,15 +17,24 @@ app.post('/convert', async (req, res) => {
   }
 });
 
-app.post('/convert_multiple', async (req, res) => {
+// Convert number to string
+app.post('/number_to_text', async (req, res) => {
   try {
-    const textObject = req.body;
-    const numberObject = {};
-    for (const key in textObject) {
-      numberObject[key] = parseFloat(textObject[key]);
-    }
+    console.log(req.body);
+    const text = req.body.value.toString();
+    res.status(200).json({ text });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
 
-    res.status(200).json(numberObject);
+// Convert floating number to whole number
+app.post('/whole_number', async (req, res) => {
+  try {
+    console.log(req.body);
+    const wholeNumber = Math.round(parseFloat(req.body.value));
+    res.status(200).json({ wholeNumber });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
