@@ -4,7 +4,7 @@ const request = require('request-promise-native');
 const NodeCache = require('node-cache');
 const session = require('express-session');
 let axios = require('axios');
-const opn = require('open');
+// const opn = require('open');
 const app = express();
 const qs = require('qs');
 
