@@ -8,6 +8,8 @@ const opn = require('open');
 const app = express();
 const qs = require('qs');
 
+app.use(express.json());
+
 const PORT = process.env.PORT || 3000;
 const BASE_URL = "https://dataconvertter-jrivzo2kh-tonmoy5s-projects.vercel.app"
 // const BASE_URL = "http://localhost:3000"
