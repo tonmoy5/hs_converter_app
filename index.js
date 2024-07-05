@@ -11,14 +11,14 @@ const qs = require('qs');
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
-const BASE_URL = "https://dataconvertter-jrivzo2kh-tonmoy5s-projects.vercel.app"
-// const BASE_URL = "http://localhost:3000"
+const BASE_URL = "https://dataconvertter-jrivzo2kh-tonmoy5s-projects.vercel.app";
+// const BASE_URL = "http://localhost:3000";
 
 const refreshTokenStore = {};
 const accessTokenCache = new NodeCache({ deleteOnExpire: true });
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
-  throw new Error('Missing CLIENT_ID or CLIENT_SECRET environment variable.')
+  throw new Error('Missing CLIENT_ID or CLIENT_SECRET environment variable.');
 }
 
 //===========================================================================//
@@ -52,7 +52,56 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// Step 1
+// Publicly accessible routes
+app.post('/text_to_number', async (req, res) => {
+  console.log(req);
+  try {
+    console.log(req.body.value);
+    const number = parseFloat(req.body.value);
+    res.status(200).json({
+      "outputFields": {
+        "numberOutput": number,
+        "hs_execution_state": "SUCCESS"
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+app.post('/number_to_text', async (req, res) => {
+  try {
+    const text = req.body.value.toString();
+    res.status(200).json({
+      "outputFields": {
+        "Converted_Text": text,
+        "hs_execution_state": "SUCCESS"
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+app.post('/whole_number', async (req, res) => {
+  try {
+    console.log(req.body);
+    const wholeNumber = Math.round(parseFloat(req.body.value));
+    res.status(200).json({
+      "outputFields": {
+        "whole_number": wholeNumber,
+        "hs_execution_state": "SUCCESS"
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+// OAuth and other secured routes
 const authUrl = 'https://app.hubspot.com/oauth/authorize?client_id=' + CLIENT_ID + '&redirect_uri=' + REDIRECT_URI + '&scope=' + SCOPES.join(' ');
 
 app.get('/install', (req, res) => {
@@ -62,7 +111,6 @@ app.get('/install', (req, res) => {
   console.log('===> Step 2: User is being prompted for consent by HubSpot');
 });
 
-// Step 3
 app.get('/oauth-callback', async (req, res) => {
   console.log('===> Step 3: Handling the request sent by the server');
 
@@ -78,7 +126,6 @@ app.get('/oauth-callback', async (req, res) => {
       code: req.query.code
     };
 
-    // Step 4
     console.log('===> Step 4: Exchanging authorization code for an access token and refresh token');
     const token = await exchangeForTokens(req.sessionID, authCodeProof, getTokenHeaders);
     if (token.message) {
@@ -181,57 +228,6 @@ app.get('/error', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.write(`<h4>Error: ${req.query.msg}</h4>`);
   res.end();
-});
-
-// Text to number conversion
-app.post('/text_to_number', async (req, res) => {
-  console.log(req)
-  try {
-    console.log(req.body.value);
-    const number = parseFloat(req.body.value);
-    res.status(200).json({
-      "outputFields": {
-        "numberOutput": number,
-        "hs_execution_state": "SUCCESS"
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
-  }
-});
-
-// Convert number to string
-app.post('/number_to_text', async (req, res) => {
-  try {
-    const text = req.body.value.toString();
-    res.status(200).json({
-      "outputFields": {
-        "Converted_Text": text,
-        "hs_execution_state": "SUCCESS"
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
-  }
-});
-
-// Convert floating number to whole number
-app.post('/whole_number', async (req, res) => {
-  try {
-    console.log(req.body);
-    const wholeNumber = Math.round(parseFloat(req.body.value));
-    res.status(200).json({
-      "outputFields": {
-        "whole_number": wholeNumber,
-        "hs_execution_state": "SUCCESS"
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
-  }
 });
 
 app.listen(PORT, () => {
