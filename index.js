@@ -44,7 +44,12 @@ app.post('/whole_number', async (req, res) => {
   try {
     console.log(req.body);
     const wholeNumber = Math.round(parseFloat(req.body.value));
-    res.status(200).json({ wholeNumber });
+    res.status(200).json({
+      "outputFields": {
+        "whole_number": wholeNumber,
+        "hs_execution_state": "SUCCESS"
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
